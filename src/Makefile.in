@@ -1,0 +1,137 @@
+#
+# $Id: Makefile.in,v 1.2 2001/06/15 02:46:18 slumos Exp $	
+#
+# Copyright (c) 1995 Regents of the University of Nevada
+#
+# Makefile for ocrspell
+# Ocrspell OCR-based statistical spell checker
+# Copyright (C) 1995 Regents of the University of Nevada
+# Text Retrieval Group
+# Information Science Research Institute
+# University of Nevada, Las Vegas
+# Las Vegas, NV 89154-4021
+# isri-text@isri.unlv.edu.
+
+DEFS= @DEFS@
+CC= @CC@
+
+DEBUG = @DEBUG@
+WARNINGS = @WARNINGS@
+
+CFLAGS= $(WARNINGS) $(DEBUG) @CFLAGS@ -I. $(DEFS)
+LIBS= @LIBS@
+
+SRCS= ocrgen.c statcheck.c ispell_emulate.c stats.c learn.c \
+      addaptive_stats.c levelsat.c  intelligent_nonalpha_handler.c \
+      subseq.c lcs.c lcs2cnf.c cnf.c spell.c
+OBJS= ocrgen.o statcheck.o ispell_emulate.o stats.o learn.o \
+      addaptive_stats.o levelsat.o intelligent_nonalpha_handler.o \
+      subseq.o lcs.o lcs2cnf.o cnf.o spell.o
+
+all : ocrspell
+
+ocrspell : $(OBJS)
+	   $(CC) -o ocrspell $(OBJS) $(LIBS)
+
+depend : $(SRCS)
+	makedepend -- $(CFLAGS) -- $(SRCS)
+
+clean :
+	rm $(OBJS) ocrspell
+
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+ocrgen.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+ocrgen.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+ocrgen.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+ocrgen.o: /usr/include/stdlib.h /usr/include/string.h /usr/include/ctype.h
+ocrgen.o: copyright.h statcheck.h levelsat.h config.h ocrgen.h
+ocrgen.o: intelligent_nonalpha_handler.h ispell_emulate.h learn.h stats.h
+statcheck.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+statcheck.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+statcheck.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+statcheck.o: /usr/include/stdlib.h /usr/include/string.h /usr/include/ctype.h
+statcheck.o: /usr/include/signal.h /usr/include/sys/signal.h
+statcheck.o: /usr/include/sys/unistd.h /usr/include/unistd.h
+statcheck.o: /usr/include/sys/types.h /usr/include/sys/machtypes.h
+statcheck.o: /usr/include/sys/int_types.h /usr/include/sys/select.h
+statcheck.o: /usr/include/sys/time.h /usr/include/sys/time.h copyright.h
+statcheck.o: statcheck.h intelligent_nonalpha_handler.h ocrgen.h
+statcheck.o: ispell_emulate.h stats.h normal.h
+ispell_emulate.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+ispell_emulate.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+ispell_emulate.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+ispell_emulate.o: /usr/include/stdlib.h /usr/include/string.h statcheck.h
+ispell_emulate.o: ispell_emulate.h ocrgen.h
+stats.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+stats.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+stats.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+stats.o: /usr/include/stdlib.h /usr/include/string.h statcheck.h stats.h
+stats.o: ocrgen.h normal.h
+learn.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+learn.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+learn.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+learn.o: /usr/include/stdlib.h /usr/include/string.h learn.h statcheck.h
+learn.o: lcs2cnf.h addaptive_stats.h ocrgen.h
+addaptive_stats.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+addaptive_stats.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+addaptive_stats.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+addaptive_stats.o: /usr/include/stdlib.h /usr/include/string.h
+addaptive_stats.o: /usr/include/ctype.h /usr/include/signal.h
+addaptive_stats.o: /usr/include/sys/signal.h /usr/include/sys/unistd.h
+addaptive_stats.o: /usr/include/unistd.h /usr/include/sys/types.h
+addaptive_stats.o: /usr/include/sys/machtypes.h /usr/include/sys/int_types.h
+addaptive_stats.o: /usr/include/sys/select.h /usr/include/sys/time.h
+addaptive_stats.o: /usr/include/sys/time.h statcheck.h addaptive_stats.h
+levelsat.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+levelsat.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+levelsat.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+levelsat.o: /usr/include/stdlib.h /usr/include/string.h /usr/include/ctype.h
+levelsat.o: /usr/include/unistd.h /usr/include/sys/types.h
+levelsat.o: /usr/include/sys/machtypes.h /usr/include/sys/int_types.h
+levelsat.o: /usr/include/sys/select.h /usr/include/sys/time.h
+levelsat.o: /usr/include/sys/time.h /usr/include/sys/unistd.h copyright.h
+levelsat.o: statcheck.h ocrgen.h levelsat.h
+intelligent_nonalpha_handler.o: /usr/include/stdio.h
+intelligent_nonalpha_handler.o: /usr/include/sys/feature_tests.h
+intelligent_nonalpha_handler.o: /usr/include/sys/isa_defs.h
+intelligent_nonalpha_handler.o: /usr/include/sys/va_list.h
+intelligent_nonalpha_handler.o: /usr/include/stdio_tag.h
+intelligent_nonalpha_handler.o: /usr/include/stdio_impl.h
+intelligent_nonalpha_handler.o: /usr/include/stdlib.h /usr/include/string.h
+intelligent_nonalpha_handler.o: /usr/include/ctype.h copyright.h statcheck.h
+intelligent_nonalpha_handler.o: intelligent_nonalpha_handler.h config.h
+intelligent_nonalpha_handler.o: ocrgen.h
+subseq.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+subseq.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+subseq.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+subseq.o: /usr/include/memory.h /usr/include/sys/types.h
+subseq.o: /usr/include/sys/machtypes.h /usr/include/sys/int_types.h
+subseq.o: /usr/include/sys/select.h /usr/include/sys/time.h
+subseq.o: /usr/include/sys/time.h /usr/include/errno.h
+subseq.o: /usr/include/sys/errno.h /usr/include/string.h subseq.h lcs2cnf.h
+lcs.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+lcs.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+lcs.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+lcs.o: /usr/include/memory.h /usr/include/sys/types.h
+lcs.o: /usr/include/sys/machtypes.h /usr/include/sys/int_types.h
+lcs.o: /usr/include/sys/select.h /usr/include/sys/time.h
+lcs.o: /usr/include/sys/time.h /usr/include/malloc.h /usr/include/string.h
+lcs.o: subseq.h
+lcs2cnf.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+lcs2cnf.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+lcs2cnf.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+lcs2cnf.o: /usr/include/memory.h /usr/include/sys/types.h
+lcs2cnf.o: /usr/include/sys/machtypes.h /usr/include/sys/int_types.h
+lcs2cnf.o: /usr/include/sys/select.h /usr/include/sys/time.h
+lcs2cnf.o: /usr/include/sys/time.h /usr/include/malloc.h
+lcs2cnf.o: /usr/include/string.h subseq.h cnf.h config.h learn.h lcs2cnf.h
+cnf.o: /usr/include/stdio.h /usr/include/sys/feature_tests.h
+cnf.o: /usr/include/sys/isa_defs.h /usr/include/sys/va_list.h
+cnf.o: /usr/include/stdio_tag.h /usr/include/stdio_impl.h
+cnf.o: /usr/include/memory.h /usr/include/sys/types.h
+cnf.o: /usr/include/sys/machtypes.h /usr/include/sys/int_types.h
+cnf.o: /usr/include/sys/select.h /usr/include/sys/time.h
+cnf.o: /usr/include/sys/time.h /usr/include/malloc.h /usr/include/string.h
+cnf.o: subseq.h cnf.h lcs2cnf.h

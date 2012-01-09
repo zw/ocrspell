@@ -1,0 +1,23 @@
+
+Not a real README, just need to leave some notes about building this
+thing as it is at the moment.
+
+
+- building:
+  - run autoconf to generate a configure script.
+  - ./configure --prefix=/local/ocrspell-<version>
+  - edit Makefile, delete spell.c from SRCS and spell.o from OBJS.
+  - make depend
+  - make
+  - install files by hand
+
+- don't know what spell.[ch] is needed for.  the link fails unless you
+  delete it from SRCS and OBJS in the Makefile.  same routines are in
+  statcheck.c.
+
+- was missing letter_ngram.freq, ocr_untrained.freq, and ocr.freq.
+  snarfed them from /raid1/ccd0/execs/SPARC_5.7/local/ocrspell/share.
+
+- there's no install target.  ocrspell goes in bin, ocrspell.el in
+  lib, quick_demo.txt in doc, and those 3 files mentioned above in
+  share.

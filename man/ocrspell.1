@@ -1,0 +1,158 @@
+.\" Ocrspell Man Page - Eric Stofsky
+.TH OCRSPELL 1 "27 December 1995"
+.SH NAME
+ocrspell \- an interactive spell checking system
+.SH SYNOPSIS
+.B ocrspell
+[
+.B \-ahpuvIg
+]
+[
+.B \-w
+.I word
+]
+[
+.B \-L
+.I log\-file
+]    
+.P
+[
+.B \-l
+.I learn\-database
+]
+[
+.B \-f
+.I frequency\-file
+]
+.P
+[
+.B \-d
+.I alt\-dictionary
+]
+.SH DESCRIPTION
+.LP
+.B ocrspell 
+is a spell checking system that semi-automatically corrects OCR
+errors. The text may be unpost-processed or post-processed using the
+Post-Processing System (see
+.BR ppsys (1)).
+Choices for each of the misspelled words in the document are generated
+using a statistically based level saturation technique.  An emacs
+interface for
+.BR ocrspell(1)
+is available.  When run without the interface output is as follows:
+.P
+If a word is not in the dictionary then a list of the form:
+.P 
+& <misspelled-word> <number-of-misspellings> <offset>: <correction-list>
+is returned.  Words in the <correction-list> are delimited by commas.
+.P 
+If the word occurs in the lexicon:
+.P
+* is returned.
+.P
+A robust set of features allow for more specific output included
+statistical analysis.
+.P
+New words can be added to the lexicon by sending ocrspell: @<word>
+.SH OPTIONS
+.TP
+.B \-h
+Display help information.
+.TP
+.B \-u
+Display usage information.
+.TP
+.B \-v
+Display version and copyright information.
+.TP
+.B \-a
+Run ocrspell interactively
+.TP
+.B \-I
+Use intelligent word detection
+.TP
+.B \-p
+Run ocrspell interactively with prompts and statistics information
+.TP
+.B \-g
+Use fast mode (for large documents)
+.TP
+.B \-w
+.I word
+Ocrspell check
+.I word. 
+Must be a single word.
+.TP
+.B \-L
+.I log\-file
+Save word selection information in
+.I log\-file.
+Must contain the entire path.
+.TP
+.B \-l
+.I learn\-database
+Use statistical learning feature with new frequency database
+.I learn\-database.
+Must contain the entire path.
+.TP
+.B \-f
+.I frequency\-file
+Use alternate frequency file
+.I frequency\-file.
+Must contain the entire path.
+.TP
+.B \-d
+.I alt\-dictionary
+Use alternate 
+.BR ispell(1)
+hashed dictionary
+.I alt\-dictionary.
+Must contain the entire path.
+.TP
+.SH "FILES"
+.TP
+.BI log\-file
+Keeps track of non-hit errors/word generation, used in conjunction
+with \-L, must contain the full path of the file. 
+.TP
+.BI learn\-database
+New statistical info is kept in this file, used in conjunction with
+\-l, must contain the full path of the file.
+.TP
+.BI frequency\-file
+Ocr static frequency file, default file will be used unless the \-f
+option specifies the full path of an alternate frequency file.
+.TP
+.BI alt\-dictionary
+Alternate 
+.BR ispell(1)
+hashed dictionary, must contain the full path to the file. The
+alternate hashed dictionary /isri/TR/lib/ispell/manicure1.hash is used
+by default.
+.TP
+.BI /isri/TR/bin/ispell
+Ispell spell checker version 3.1.12
+.TP
+.BI /isri/TR/lib/ispell/manicure1.hash
+Special expanded dictionary for the LSS collection
+.TP
+.BI letter\-ngram\-file
+Contains the tri-grams for the current document set, see config.h for details.
+.TP
+.SH "SEE ALSO"
+.BR xdoc_parse (1),
+.BR autotag (1),
+.BR rummage (1),
+.BR libldoc (3),
+.BR ppsys (1),
+.BR ispell (1)
+.SH "BUGS"
+As of version 1.0.0, the log file feature could be cleaned up. Other
+than that, all things appear to be well.
+.SH "COPYRIGHT"
+Copyright (C) 1995, 1996 by the University of Nevada, Las Vegas.
+See the file copyright.h in the distribution for details.
+.SH "AUTHOR"
+Text Retrieval Group, Information Science Research Institute,
+University of Nevada, Las Vegas. <isri-text@isri.unlv.edu>

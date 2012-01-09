@@ -1,0 +1,120 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_DEFUN([AC_DEFINE_DIR], [
+                   ac_expanded=`(
+                       test "x$prefix" = xNONE && prefix="$ac_default_prefix"
+                       test "x$exec_prefix" = xNONE && exec_prefix="${prefix}"
+                       eval echo \""[$]$2"\"
+                   )`
+                   ifelse($3, ,
+                     AC_DEFINE_UNQUOTED($1, "$ac_expanded"),
+                     AC_DEFINE_UNQUOTED($1, "$ac_expanded", $3))
+           ])
+
+AC_INIT(spell.c)
+AC_CONFIG_HEADER(config.h)
+
+dnl Build options
+AC_ARG_ENABLE(debug,    [  --enable-debug          enable debug flags [default=no]], , enable_debug=no)
+AC_ARG_ENABLE(warnings, [  --enable-warnings       -Wall -Werror if CC=gcc [default=no]], , enable_warnings=no)
+
+DEBUG=""
+if eval "test x$enable_debug = xyes"; then
+  DEBUG="-g"
+fi
+
+WARNINGS=""
+if eval "test x$enable_warnings = xyes"; then
+  if eval "test x$GCC = xyes"; then
+    WARNINGS="-Wall -Werror -ansi -pedantic"
+  else
+    AC_MSG_WARN([--enable-warnings only valid with GCC])
+  fi
+fi
+
+dnl Handle the section of config.h that does:
+dnl  #define ISPELL_PATH "/local/gnu/bin/ispell"
+dnl  #define LEARN_DATABASE ""
+dnl  #define OCR_STATIC_FREQFILE "/homes/isri/slumos/ocrspell/ocr.freq"
+dnl  #define LETTER_NGRAM_FILE "/homes/isri/slumos/ocrspell/letter_ngram.freq"
+dnl  #define ALT_DICTIONARY_PATH "/local/gnu/lib/american"
+
+AC_ARG_ENABLE(ispell_path, [  --with-ispell=DIR       set ispell location "[searched]"],
+if eval "test x$with_ispell != x"; then
+    ispell_path=$with_ispell
+fi)
+AC_PATH_PROG(ISPELL, "ispell", "none", $ispell_path:$PATH)
+
+AC_ARG_WITH(learn_db,  [  --with-learndb=FILE     learn database file is FILE])
+
+AC_ARG_WITH(freqfile,  [  --with-freqfile=FILE    OCR static frequency file is FILE "[DATADIR/ocr.freq]"])
+
+AC_ARG_WITH(ngramfile, [  --with-ngramfile=FILE   letter ngram file is FILE "[DATADIR/letter_ngram.freq]"])
+
+AC_ARG_WITH(dict,   [  --with-dict=FILE        default dictionary is FILE "[american]"])
+
+dnl Checks for programs.
+AC_PROG_CC
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS(malloc.h strings.h unistd.h sys/types.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+dnl Checks for library functions.
+AC_PROG_GCC_TRADITIONAL
+AC_TYPE_SIGNAL
+
+if test "$ISPELL" = "none"; then 
+  AC_MSG_ERROR([can\'t find ispell program, use --with-ispell=DIR])
+else
+  AC_DEFINE_UNQUOTED(ISPELL_PATH, "$ISPELL", [location of ispell program])
+fi
+
+if test "x$with_learn_db" = "x" ; then
+  AC_DEFINE(LEARN_DATABASE, "", [location of file for new statistical info])
+else
+  AC_DEFINE_UNQUOTED(LEARN_DATABASE, $with_learn_db, [location of file for new statistical info])
+fi
+
+if test "x$with_freqfile" = "x" ; then
+   AC_DEFINE_DIR(OCR_STATIC_FREQFILE, datadir/ocr.freq, [pathname of the static OCR frequency file])
+else
+  AC_DEFINE_UNQUOTED(OCR_STATIC_FREQFILE, $with_freqfile, [pathname of the static OCR frequency file])
+fi
+
+if test "x$with_ngramfile" = "x" ; then
+  AC_DEFINE_DIR(LETTER_NGRAM_FILE, datadir/letter_ngram.freq, [pathname of letter ngram file])
+else
+  AC_DEFINE_UNQUOTED(LETTER_NGRAM_FILE, $with_ngramfile, [pathname of letter ngram file])
+fi
+
+if test "x$with_dict" = "x" ; then
+  with_dict="american"
+fi
+
+AC_MSG_CHECKING([whether dictionary ($with_dict) works])
+if (echo | ispell -a -d $with_dict >/dev/null 2>&1); then
+  AC_MSG_RESULT(yes)
+  DICT=$with_dict
+else
+  AC_MSG_RESULT(no)
+fi
+
+if test "x$DICT" = "x" ; then
+  AC_MSG_ERROR(cannot find default dictionary)
+else
+  AC_DEFINE_UNQUOTED(ALT_DICTIONARY_PATH, "$DICT", [alternate dictionary file])
+  AC_MSG_RESULT(default dictionary is '$DICT')
+fi
+
+AC_SUBST(DEBUG)
+AC_SUBST(WARNINGS)
+AC_SUBST(ISPELL_PATH)
+AC_SUBST(LEARN_DATABASE)
+AC_SUBST(OCR_STATIC_FREQFILE)
+AC_SUBST(LETTER_NGRAM_FILE)
+AC_SUBST(ALT_DICTIONARY_PATH)
+AC_OUTPUT(Makefile)

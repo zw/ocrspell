@@ -1,0 +1,74 @@
+/*
+ * $Id: config.h.in,v 1.2 2001/06/15 02:46:18 slumos Exp $	 
+ *
+ * Statistical Spell Checker Prototype
+ * Eric Stofsky
+ * file : config.h (ocrspell's default configuration)
+*/
+
+/* Ocrspell OCR-based statistical spell checker
+ * Copyright (C) 1995 Regents of the University of Nevada
+ * Text Retrieval Group
+ * Information Science Research Institute
+ * University of Nevada, Las Vegas
+ * Las Vegas, NV 89154-4021
+ * isri-text@isri.unlv.edu.
+ *
+*/
+
+/* Define to empty if the keyword does not work.  */
+#undef const
+
+/* Define as the return type of signal handlers (int or void).  */
+#undef RETSIGTYPE
+
+/* Define if you have the ANSI C header files.  */
+#undef STDC_HEADERS
+
+/* Define if you have the <malloc.h> header file.  */
+#undef HAVE_MALLOC_H
+
+/* Define if you have the <strings.h> header file (Solaris). */
+#undef HAVE_STRINGS_H
+
+/* Define if you have the <unistd.h> header file.  */
+#undef HAVE_UNISTD_H
+
+/* Define if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Defined if you have a POSIX.1 <sys/wait.h>. */
+#undef HAVE_SYS_WAIT_H
+
+#define VERSION_ID "1.0.00"
+#define USE_ALTERNATE_DICTIONARY 1
+#define SPELL_BY_LINE 1
+#define LOG_FILE 0
+#define DICTIONARY_INSERTION 1
+#define ISPELL_EVALUATION 1
+#define MULTILEVEL_SATURATION 1
+#define INTELLIGENT_WORD 0
+#define SPELL_BY_LINE 1
+#define IN_WORD  1
+#define INTERACTIVE_MODE 0
+#define INTERACTIVE_PROMPT 0
+#define INTERACTIVE_LEARNING 0
+#define FAST_STATS_MODE 0
+#define EVALUATE_ISPELL_CHOICES 1
+
+#define LINE_BREAK "^^^"
+
+/* Define to pathname of your ispell program */
+#define ISPELL_PATH "@ISPELL_PATH@"
+
+/* Define to the pathname of file to which to write new statistical info */
+#define LEARN_DATABASE "@LEARN_DATABASE@"
+
+/* Define to pathname of the static OCR frequency file */
+#define OCR_STATIC_FREQFILE "@OCR_STATIC_FREQFILE@"
+
+/* Define to the pathname of the letter ngram file */
+#define LETTER_NGRAM_FILE "@LETTER_NGRAM_FILE@"
+
+/* Define to the pathname of the alternate dictionary to use */
+#define ALT_DICTIONARY_PATH "@ALT_DICTIONARY_PATH@"
