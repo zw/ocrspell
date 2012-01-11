@@ -2,15 +2,6 @@
 Not a real README, just need to leave some notes about building this
 thing as it is at the moment.
 
-
-- building:
-  - run autoconf to generate a configure script.
-  - ./configure --prefix=/local/ocrspell-<version>
-  - edit Makefile, delete spell.c from SRCS and spell.o from OBJS.
-  - make depend
-  - make
-  - install files by hand
-
 - don't know what spell.[ch] is needed for.  the link fails unless you
   delete it from SRCS and OBJS in the Makefile.  same routines are in
   statcheck.c.
@@ -18,6 +9,37 @@ thing as it is at the moment.
 - was missing letter_ngram.freq, ocr_untrained.freq, and ocr.freq.
   snarfed them from /raid1/ccd0/execs/SPARC_5.7/local/ocrspell/share.
 
-- there's no install target.  ocrspell goes in bin, ocrspell.el in
-  lib, quick_demo.txt in doc, and those 3 files mentioned above in
-  share.
+- building:
+  - run autoconf to generate a configure script.
+  - ./configure --prefix=/local/ocrspell-<version>
+  - edit Makefile, delete spell.c from SRCS and spell.o from OBJS.
+  # by GCH: I did this in Makefile.in; this lets me build again without editing Makefile each time
+  
+  - make depend
+  - make
+  # by GCH: I had to add #include <stdlib.h> to lcs2cnf.c and
+  # added #include <unistd.h> to addaptive_stats.c, ocrgen.c and
+  # intelligent_nonalpha_handler.c to get it to build without errors.
+  # There are still many warnings- 
+  	# several "warning: ignoring return value of ‘fgets’, declared with attribute warn_unused_result"
+  	# several "warning: passing argument 1 of ‘quick_insert’ from incompatible pointer type"
+  	# several "note: expected ‘struct statistics **’ but argument is of type ‘stat_link’"
+  	# several "warning: call to __builtin___strncat_chk might overflow destination buffer"
+  # but it builds and runs. at ~/Downloads/ocrspell-1.0/src/ I run
+  # ./ocrspell -a < quick_demo.txt
+  # with the result that it complains it can't read ${prefix}/share/ocr.freq
+  # that can be fixed by adding a parameter
+  # ./ocrspell -a -f ./ocr.freq < quick_demo.txt
+  # which brings another error that it can't read  ${prefix}/share/letter_ngram.freq
+  # can't fix that through a parameter...
+  # So, in configure at line 685 change prefix=NONE to prefix=/home/graham/Downloads/ocrspell-1.0/src
+  # and a few lines later change datarootdir='${prefix}/share' to datarootdir='/home/graham/Downloads/ocrspell-1.0/src/share'
+  # not sure yet which if these fixed it but...
+  # ./ocrspell -a -f ./ocr.freq < quick_demo.txt
+  # results in 4 lines of output followed by a segmentation fault. I suspect this is down to the warnings seen earlier.
+  
+  - install files by hand
+    - there's no install target.  ocrspell goes in bin, ocrspell.el in
+      lib, quick_demo.txt in doc, and those 3 files mentioned above in
+      share.
+      # by GCH: not very explicit, and not guaranteed to work. 
