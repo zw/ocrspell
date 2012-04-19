@@ -60,6 +60,7 @@ int spell_checker_shutdown();
 int spell_checker_startup(char *, char *);
 int read_stat_list(int *);
 int add_new_word_for_session(char *);
+void discard_end_of_matches_newline();
 int analyze_word_list(/* char *, char *** , stat_link * */);
 void dump_the_table();
 float freq(int,int);

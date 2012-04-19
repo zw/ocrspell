@@ -52,7 +52,6 @@
 #include "statcheck.h"
 #include "ocrgen.h"
 #include "levelsat.h"
-#include "spell.h"
 
 static char rcsid[] = "$Id: levelsat.c,v 1.2 2001/06/15 18:40:05 slumos Exp $";
 
@@ -192,8 +191,6 @@ multilevelsaturation_generator (char *word, char ***choice, stat_link head_stat,
       correct_let = '\0';
 
       if (level_one) {
-	fseek(to_spell_checker_st,0,SEEK_END);
-	fseek(from_spell_checker_st,0,SEEK_END);
 	fprintf(to_spell_checker_st, "%s\n", new_word);
 	fflush(to_spell_checker_st);
 	       
@@ -201,9 +198,8 @@ multilevelsaturation_generator (char *word, char ***choice, stat_link head_stat,
 	if (!fgets(buf, BUFSIZE, from_spell_checker_st)) {
 	  fprintf(stderr, "error reading word list\n");
 	  return(-1);}
-	correct_let = buf[0];
-		    
-	fseek(from_spell_checker_st,0,SEEK_END);
+	correct_let = buf[0];    
+	discard_end_of_matches_newline();
       }
 	       
       if ((correct_let == '*')||(correct_let == '+')){
@@ -282,9 +278,7 @@ multilevelsaturation_generator (char *word, char ***choice, stat_link head_stat,
 		  fprintf(stderr, "error reading word list\n");
 		  return(-1);}
 		correct_let = buf[0];
-					
-					
-		fseek(from_spell_checker_st,0,SEEK_END);
+		discard_end_of_matches_newline();
 	      }
 	      if ((correct_let == '*')||
 		  (correct_let == '+')){
