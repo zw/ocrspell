@@ -159,8 +159,6 @@ struct confusion **confusions;
 	  prev->next = NULL;
 	  free (prev);
      }
-
-     free (*confusions);
      *confusions = NULL;
 }
 

@@ -448,6 +448,16 @@ enter_binary_mode(void)
      return(1);
 }
 
+void discard_end_of_matches_newline() {
+     char discardbuf[2]; // expecting "\n\0"
+     if (!fgets(discardbuf, 2, from_spell_checker_st)) {
+          perror("error reading ispell end-of-matches newline");
+          exit(-1);
+     } else if (discardbuf[0] != '\n') {
+          fprintf(stderr, "error reading ispell end-of-matches newline: expected \\n, got %x\n", discardbuf[0]);
+          exit(-1);
+     }
+}
 
 
 int
@@ -506,13 +516,16 @@ stat_link *head_stat;
 	  if (!fgets(buf, BUFSIZE, from_spell_checker_st)) {
 	       fprintf(stderr, "error reading word list\n");
 	       return(-1);
-	  } else if (buf[0] == '#'){
+	  }
+
+	  discard_end_of_matches_newline();
+
+	  if (buf[0] == '#'){
 
 	       /*
 		* The word is a misspelling and no ispell near misses
 		* could be generated
 		*/
-	       fgets(buf,BUFSIZE,from_spell_checker_st);
 	       ++a_word.NO_ISPELL;
 	       return(0);
 
@@ -527,8 +540,6 @@ stat_link *head_stat;
 	       }
 	       printf("*\n");
 	       ++a_word.correct_spelling;
-	       fseek(to_spell_checker_st,0,SEEK_END);
-	       fseek(from_spell_checker_st,0,SEEK_END);
 	       return(0);
 
 	  } else if (buf[0] == '\n') {
@@ -546,7 +557,6 @@ stat_link *head_stat;
 		* mapping induced errors
 		*/
 	       misspelled++;
-	       fgets(buf,BUFSIZE,from_spell_checker_st);
 	       ++a_word.NO_ISPELL;
 	       return(0);
 
@@ -592,8 +602,6 @@ stat_link *head_stat;
 			       * printf("* [acronym]\n");
 			       */
 			      printf("*\n");
-			      fseek(to_spell_checker_st,0,SEEK_END);
-			      fseek(from_spell_checker_st,0,SEEK_END);
 			      return(0);
 			 }
 			 *q = t;
@@ -638,6 +646,7 @@ stat_link *head_stat;
 			 p = q+2;
 		    }
 		    (*near_misses)[num_miss] = NULL;
+			break;
 	       }
 	  }
      }
@@ -784,8 +793,6 @@ char *word, ***choice;stat_link *head_stat;int no_ocr_errors;
 			      fprintf(stderr, "error reading word list\n");
 			      return(-1);}
 
-			 fseek(to_spell_checker_st,0,SEEK_END);
-			 fseek(from_spell_checker_st,0,SEEK_END);
 
 			 if (buf[0] == '*'){
 			      /*
@@ -812,6 +819,7 @@ char *word, ***choice;stat_link *head_stat;int no_ocr_errors;
 						  *head_stat,j);
 			      }
 			 }
+			 discard_end_of_matches_newline();
 			      strcpy(new_word,word);
 				
 		    }

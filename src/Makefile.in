@@ -23,10 +23,10 @@ LIBS= @LIBS@
 
 SRCS= ocrgen.c statcheck.c ispell_emulate.c stats.c learn.c \
       addaptive_stats.c levelsat.c  intelligent_nonalpha_handler.c \
-      subseq.c lcs.c lcs2cnf.c cnf.c spell.c
+      subseq.c lcs.c lcs2cnf.c cnf.c
 OBJS= ocrgen.o statcheck.o ispell_emulate.o stats.o learn.o \
       addaptive_stats.o levelsat.o intelligent_nonalpha_handler.o \
-      subseq.o lcs.o lcs2cnf.o cnf.o spell.o
+      subseq.o lcs.o lcs2cnf.o cnf.o
 
 all : ocrspell
 
