@@ -10,7 +10,7 @@ AC_DEFUN([AC_DEFINE_DIR], [
                      AC_DEFINE_UNQUOTED($1, "$ac_expanded", $3))
            ])
 
-AC_INIT(spell.c)
+AC_INIT()
 AC_CONFIG_HEADER(config.h)
 
 dnl Build options
